@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Parsetagram</string>
+
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">FXMXpvdyLu0u8OQCzIEfMXdn5c1vQXFQaoH01Gir</string>
+    <string name="back4app_client_key">sE24n2T2UlS8GRgshUE5bCVA6Q91FaFrFYlyL61A</string>
+</resources>
