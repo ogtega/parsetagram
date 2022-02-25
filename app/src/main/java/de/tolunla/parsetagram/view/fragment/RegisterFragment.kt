@@ -5,10 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.parse.ParseUser
+import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.RegisterFragmentBinding
 
-class RegisterFragment: Fragment() {
+class RegisterFragment : Fragment() {
     private lateinit var binding: RegisterFragmentBinding
 
     override fun onCreateView(
@@ -22,8 +24,13 @@ class RegisterFragment: Fragment() {
             val user = ParseUser()
             user.username = binding.username.text.toString()
             user.setPassword(binding.password.text.toString())
-            user.add("fullname", binding.fullname.text.toString())
+            user.put("fullname", binding.fullname.text.toString())
         }
+
+        binding.loginButton.setOnClickListener {
+            findNavController().navigate(R.id.login_dst)
+        }
+
         return binding.root
     }
 }
