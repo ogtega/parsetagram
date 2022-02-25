@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/register">
+    app:startDestination="@id/register_dst">
 
     <fragment
-        android:id="@+id/register"
-        android:name="de.tolunla.parsetagram.view.fragment.RegisterFragment" >
+        android:id="@+id/register_dst"
+        android:name="de.tolunla.parsetagram.view.fragment.RegisterFragment"
+        tools:layout="@layout/register_fragment">
         <action
             android:id="@+id/action_register_to_login"
-            app:destination="@id/login" />
+            app:destination="@id/login_dst" />
+        <action
+            android:id="@+id/action_register_dst_to_feed_dst"
+            app:destination="@id/feed_dst" />
     </fragment>
 
     <fragment
-        android:id="@+id/login"
-        android:name="de.tolunla.parsetagram.view.fragment.LoginFragment" />
+        android:id="@+id/login_dst"
+        android:name="de.tolunla.parsetagram.view.fragment.LoginFragment"
+        tools:layout="@layout/login_fragment" >
+        <action
+            android:id="@+id/action_login_dst_to_feed_dst"
+            app:destination="@id/feed_dst" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/feed_dst"/>
 </navigation>
