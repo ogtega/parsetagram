@@ -22,9 +22,20 @@ class RegisterFragment : Fragment() {
 
         binding.registerButton.setOnClickListener {
             val user = ParseUser()
+
+            if (!validateFields()) return@setOnClickListener
+
             user.username = binding.username.text.toString()
             user.setPassword(binding.password.text.toString())
             user.put("fullname", binding.fullname.text.toString())
+
+            user.signUpInBackground { exception ->
+                if (exception == null) {
+                    return@signUpInBackground
+                }
+
+                findNavController().navigate(R.id.feed_dst)
+            }
         }
 
         binding.loginButton.setOnClickListener {
@@ -32,5 +43,9 @@ class RegisterFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun validateFields(): Boolean {
+        return false
     }
 }
