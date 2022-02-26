@@ -38,6 +38,7 @@ android {
 
 ext {
     parseVersion = "3.0.0"
+    camerax_version = "1.1.0-beta01"
 }
 
 dependencies {
@@ -56,6 +57,14 @@ dependencies {
     implementation "com.github.parse-community.Parse-SDK-Android:parse:$parseVersion"
     implementation "com.github.parse-community.Parse-SDK-Android:ktx:$parseVersion"
     implementation "com.github.parse-community.Parse-SDK-Android:coroutines:$parseVersion"
+
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-video:${camerax_version}"
+
+    implementation "androidx.camera:camera-view:${camerax_version}"
+    implementation "androidx.camera:camera-extensions:${camerax_version}"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

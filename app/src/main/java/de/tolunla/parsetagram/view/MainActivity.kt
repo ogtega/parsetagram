@@ -28,11 +28,10 @@ class MainActivity : AppCompatActivity() {
         // Used to know when we are at a "top level" destination
         appBarConfig = AppBarConfiguration.Builder(
             R.id.feed_dst,
+            R.id.explore_dst,
+            R.id.favorite_dst,
+            R.id.profile_dst
         ).build()
-
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            this.onOptionsItemSelected(item)
-        }
 
         setupNavigation()
 
@@ -56,6 +55,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.toolbar.visibility = View.VISIBLE
             }
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        if (navController.popBackStack().not()) {
+            super.onBackPressed()
         }
     }
 }

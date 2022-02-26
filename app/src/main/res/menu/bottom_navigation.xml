@@ -9,7 +9,7 @@
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Explore" />
     <item
-        android:id="@+id/post_dst"
+        android:id="@+id/camera_dst"
         android:icon="@drawable/ic_baseline_add_box_24"
         android:title="Post" />
     <item

@@ -13,6 +13,7 @@ import de.tolunla.parsetagram.databinding.LoginFragmentBinding
 class LoginFragment : Fragment() {
 
     lateinit var binding: LoginFragmentBinding
+    private val usernamePattern = "^(?!.*\\.\\.)(?!.*\\.$)[^\\W][\\w.]{0,29}$".toRegex()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,7 +29,7 @@ class LoginFragment : Fragment() {
             val password = binding.password.text.toString()
 
             ParseUser.logInInBackground(userName, password) { user, exception ->
-                if (user == null || exception == null) {
+                if (user == null || exception != null) {
                     return@logInInBackground
                 }
 
@@ -44,6 +45,24 @@ class LoginFragment : Fragment() {
     }
 
     private fun validateFields(): Boolean {
-        return false
+        var res = true
+
+        binding.usernameLayout.error = ""
+        binding.passwordLayout.error = ""
+
+        val username = binding.username.text.toString()
+        val password = binding.password.text.toString()
+
+        if (!usernamePattern.matches(username)) {
+            binding.usernameLayout.error = "Enter a valid username"
+            res = false
+        }
+
+        if (password.length < 8) {
+            binding.passwordLayout.error = "Password is too short"
+            res = false
+        }
+
+        return res
     }
 }
