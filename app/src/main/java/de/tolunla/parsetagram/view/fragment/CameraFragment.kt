@@ -1,5 +1,9 @@
 package de.tolunla.parsetagram.view.fragment
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -29,7 +33,7 @@ class CameraFragment : BottomSheetDialogFragment() {
     ): View {
         binding = CameraFragmentBinding.inflate(inflater)
 
-        binding.viewFinder.implementationMode = PreviewView.ImplementationMode.PERFORMANCE
+        binding.viewFinder.implementationMode = PreviewView.ImplementationMode.COMPATIBLE
         binding.viewFinder.scaleType = PreviewView.ScaleType.FIT_CENTER
 
         return binding.root
@@ -44,13 +48,16 @@ class CameraFragment : BottomSheetDialogFragment() {
         dialog.behavior.state = BottomSheetBehavior.STATE_EXPANDED
         dialog.behavior.peekHeight = 0
 
-        context?.let {
+        activity?.let {
             cameraProviderFuture = ProcessCameraProvider.getInstance(it)
 
-            cameraProviderFuture.addListener({
-                val cameraProvider = cameraProviderFuture.get()
-                bindPreview(cameraProvider)
-            }, ContextCompat.getMainExecutor(it))
+            if (allPermissionsGranted(it)) {
+                cameraProviderFuture.addListener({
+                    startCamera()
+                }, ContextCompat.getMainExecutor(it))
+            } else {
+                requestPermissions(REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+            }
         }
 
         dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)?.let {
@@ -60,7 +67,7 @@ class CameraFragment : BottomSheetDialogFragment() {
         }
     }
 
-    private fun bindPreview(cameraProvider: ProcessCameraProvider) {
+    private fun startCamera() {
         val preview: Preview = Preview.Builder()
             .build()
 
@@ -70,6 +77,41 @@ class CameraFragment : BottomSheetDialogFragment() {
 
         preview.setSurfaceProvider(binding.viewFinder.surfaceProvider)
 
-        var camera = cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
+        var camera = cameraProviderFuture.get()
+            .bindToLifecycle(this as LifecycleOwner, cameraSelector, preview)
+    }
+
+    private fun allPermissionsGranted(context: Context) = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(
+            context, it
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>, grantResults:
+        IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            context?.let {
+                if (allPermissionsGranted(it)) {
+                    startCamera()
+                } else {
+                    dialog?.dismiss()
+                }
+            }
+        }
+    }
+
+    companion object {
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.RECORD_AUDIO
+            ).apply {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }.toTypedArray()
     }
 }
