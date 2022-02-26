@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/register_dst">
+    app:startDestination="@id/feed_dst">
 
     <fragment
         android:id="@+id/register_dst"
@@ -12,10 +12,14 @@
         tools:layout="@layout/register_fragment">
         <action
             android:id="@+id/action_register_to_login"
-            app:destination="@id/login_dst" />
+            app:destination="@id/login_dst"
+            app:popUpTo="@id/login_dst"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_register_dst_to_feed_dst"
-            app:destination="@id/feed_dst" />
+            app:destination="@id/feed_dst"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -25,16 +29,21 @@
         tools:layout="@layout/login_fragment">
         <action
             android:id="@+id/action_login_dst_to_feed_dst"
-            app:destination="@id/feed_dst" />
+            app:destination="@id/feed_dst"
+            app:popUpTo="@id/nav_graph"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_login_dst_to_register_dst"
-            app:destination="@id/register_dst" />
+            app:destination="@id/register_dst"
+            app:popUpTo="@id/register_dst"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
         android:id="@+id/feed_dst"
         android:name="de.tolunla.parsetagram.view.fragment.FeedFragment"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        tools:layout="@layout/feed_fragment">
         <action
             android:id="@+id/action_feed_dst_to_profileFragment"
             app:destination="@id/profile_dst" />
@@ -47,6 +56,11 @@
         <action
             android:id="@+id/action_feed_dst_to_camera_dst"
             app:destination="@id/camera_dst" />
+        <action
+            android:id="@+id/action_feed_dst_to_register_dst"
+            app:destination="@id/register_dst"
+            app:popUpTo="@id/feed_dst"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/explore_dst"
@@ -105,7 +119,7 @@
     <dialog
         android:id="@+id/camera_dst"
         android:name="de.tolunla.parsetagram.view.fragment.CameraFragment"
-        android:label="@string/app_name" >
+        tools:layout="@layout/camera_fragment">
         <action
             android:id="@+id/action_camera_dst_to_feed_dst"
             app:destination="@id/feed_dst" />

@@ -9,6 +9,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.parse.ParseUser
 import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.ActivityMainBinding
 
@@ -55,6 +56,14 @@ class MainActivity : AppCompatActivity() {
             } else {
                 binding.toolbar.visibility = View.VISIBLE
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (ParseUser.getCurrentUser() == null) {
+            navController.navigate(R.id.register_dst)
         }
     }
 

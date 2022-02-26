@@ -35,12 +35,12 @@ class RegisterFragment : Fragment() {
                     return@signUpInBackground
                 }
 
-                findNavController().navigate(R.id.feed_dst)
+                findNavController().navigate(R.id.action_register_dst_to_feed_dst)
             }
         }
 
         binding.loginButton.setOnClickListener {
-            findNavController().navigate(R.id.login_dst)
+            findNavController().navigate(R.id.action_register_to_login)
         }
 
         return binding.root

@@ -12,7 +12,7 @@ import de.tolunla.parsetagram.databinding.LoginFragmentBinding
 
 class LoginFragment : Fragment() {
 
-    lateinit var binding: LoginFragmentBinding
+    private lateinit var binding: LoginFragmentBinding
     private val usernamePattern = "^(?!.*\\.\\.)(?!.*\\.$)[^\\W][\\w.]{0,29}$".toRegex()
 
     override fun onCreateView(
@@ -33,12 +33,12 @@ class LoginFragment : Fragment() {
                     return@logInInBackground
                 }
 
-                findNavController().navigate(R.id.feed_dst)
+                findNavController().navigate(R.id.action_login_dst_to_feed_dst)
             }
         }
 
         binding.registerButton.setOnClickListener {
-            findNavController().navigate(R.id.register_dst)
+            findNavController().navigate(R.id.action_login_dst_to_register_dst)
         }
 
         return binding.root
