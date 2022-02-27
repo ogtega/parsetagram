@@ -27,7 +27,6 @@
                 android:layout_height="?actionBarSize" />
 
         </com.google.android.material.appbar.AppBarLayout>
-
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container_view"
             android:name="androidx.navigation.fragment.NavHostFragment"

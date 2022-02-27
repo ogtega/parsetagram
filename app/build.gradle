@@ -47,12 +47,16 @@ dependencies {
     implementation 'com.google.dagger:hilt-android:2.41'
     kapt 'com.google.dagger:hilt-compiler:2.41'
 
+    implementation "io.coil-kt:coil:$rootProject.ext.coil_version"
+
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.ext.nav_version"
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.ext.nav_version"
 
     implementation "com.github.parse-community.Parse-SDK-Android:parse:$rootProject.ext.parse_version"
     implementation "com.github.parse-community.Parse-SDK-Android:ktx:$rootProject.ext.parse_version"
     implementation "com.github.parse-community.Parse-SDK-Android:coroutines:$rootProject.ext.parse_version"
+
+    implementation "androidx.paging:paging-runtime:$rootProject.ext.paging_version"
 
     implementation "androidx.camera:camera-core:${rootProject.ext.camerax_version}"
     implementation "androidx.camera:camera-camera2:${rootProject.ext.camerax_version}"
