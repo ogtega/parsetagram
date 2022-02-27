@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.parse.ParseUser
-import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.LoginFragmentBinding
 
 class LoginFragment : Fragment() {
@@ -33,12 +32,12 @@ class LoginFragment : Fragment() {
                     return@logInInBackground
                 }
 
-                findNavController().navigate(R.id.action_login_dst_to_feed_dst)
+                findNavController().navigate(LoginFragmentDirections.actionLoginDstToFeedDst())
             }
         }
 
         binding.registerButton.setOnClickListener {
-            findNavController().navigate(R.id.action_login_dst_to_register_dst)
+            findNavController().navigate(LoginFragmentDirections.actionLoginDstToRegisterDst())
         }
 
         return binding.root
