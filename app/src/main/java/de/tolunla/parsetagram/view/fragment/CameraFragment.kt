@@ -4,6 +4,11 @@ import android.Manifest
 import android.content.ContentValues
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.Cursor
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Matrix
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -27,6 +32,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.common.util.concurrent.ListenableFuture
 import de.tolunla.parsetagram.databinding.CameraFragmentBinding
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -142,10 +148,28 @@ class CameraFragment : BottomSheetDialogFragment() {
                 ContextCompat.getMainExecutor(it),
                 object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                        val action =
-                            CameraFragmentDirections.actionCameraDstToCaptionDst(outputFileResults.savedUri.toString())
-                        findNavController().navigate(action)
-                        Log.d(TAG, outputFileResults.savedUri.toString())
+                        val uri = getPath(outputFileResults.savedUri)
+
+                        uri?.let {
+                            Log.d(TAG, uri.toString())
+                            val bitmap = BitmapFactory.decodeFile(uri.toString()).let { bm ->
+                                val matrix = Matrix().apply { postRotate(90f) }
+                                val res = Bitmap.createBitmap(bm, 0, 0, bm.width, bm.height, matrix, true)
+                                bm.recycle()
+                                res
+                            }
+
+                            val file = File(uri.toString())
+
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, file.outputStream())
+                            bitmap.recycle()
+
+                            val action =
+                                CameraFragmentDirections.actionCameraDstToCaptionDst(
+                                    uri
+                                )
+                            findNavController().navigate(action)
+                        }
                     }
 
                     override fun onError(exception: ImageCaptureException) {
@@ -173,5 +197,16 @@ class CameraFragment : BottomSheetDialogFragment() {
                     add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 }
             }.toTypedArray()
+    }
+
+    fun getPath(uri: Uri?): String? {
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = activity?.managedQuery(uri, projection, null, null, null)
+
+        return cursor?.let {
+            val columnIndex: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            cursor.getString(columnIndex)
+        }
     }
 }

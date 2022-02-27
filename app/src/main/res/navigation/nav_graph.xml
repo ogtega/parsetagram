@@ -107,14 +107,14 @@
             android:id="@+id/action_profileFragment_to_feed_dst"
             app:destination="@id/feed_dst" />
         <action
-            android:id="@+id/action_profileFragment_to_feed_dst2"
-            app:destination="@id/feed_dst" />
-        <action
             android:id="@+id/action_profileFragment_to_favorite_dst"
             app:destination="@id/favorite_dst" />
         <action
             android:id="@+id/action_profile_dst_to_camera_dst"
             app:destination="@id/camera_dst" />
+        <action
+            android:id="@+id/action_profile_dst_to_register_dst"
+            app:destination="@id/register_dst" />
     </fragment>
     <dialog
         android:id="@+id/camera_dst"
@@ -125,8 +125,7 @@
             app:destination="@id/feed_dst" />
         <action
             android:id="@+id/action_camera_dst_to_caption_dst"
-            app:destination="@id/caption_dst"
-            app:popUpTo="@id/nav_graph" />
+            app:destination="@id/caption_dst" />
     </dialog>
     <dialog
         android:id="@+id/caption_dst"
@@ -138,6 +137,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_caption_dst_to_feed_dst"
-            app:destination="@id/feed_dst" />
+            app:destination="@id/feed_dst"
+            app:popUpTo="@id/nav_graph" />
     </dialog>
 </navigation>
