@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
@@ -35,6 +36,11 @@ class ProfileFragment : Fragment() {
         binding = ProfileFeedFragmentBinding.inflate(inflater)
         binding.feedList.adapter = feedAdapter
         binding.feedList.layoutManager = GridLayoutManager(context, 3)
+
+        (activity as AppCompatActivity).supportActionBar?.title =
+            ParseUser.getCurrentUser().username
+
+        binding.fullnameTv.text = ParseUser.getCurrentUser().getString("fullname")
         return binding.root
     }
 
@@ -43,7 +49,10 @@ class ProfileFragment : Fragment() {
         val query = ParseQuery<ParseObject>("Post")
         query.whereContainedIn("user", listOf<ParseUser>(ParseUser.getCurrentUser()))
 
-        (activity as AppCompatActivity).supportActionBar?.title = ParseUser.getCurrentUser().username
+        feedAdapter.onPagesUpdatedFlow.asLiveData().observe(viewLifecycleOwner) {
+            binding.postCountTv.text = feedAdapter.itemCount.toString()
+            binding.postCountLabel.text = if (feedAdapter.itemCount == 1) "Post" else "Posts"
+        }
 
         feedAdapter.liveSelected.observe(viewLifecycleOwner) { selected ->
             val deleteItems = optionsMenu.findItem(R.id.delete_post)

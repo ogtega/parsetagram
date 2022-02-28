@@ -11,15 +11,53 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp">
 
             <ImageView
+                android:id="@+id/profile_img"
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_margin="8dp"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_account_circle_24"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/posts_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/profile_img"
+                app:layout_constraintStart_toEndOf="@id/profile_img"
+                app:layout_constraintTop_toTopOf="@id/profile_img">
+
+                <TextView
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                    android:id="@+id/post_count_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0" />
+
+                <TextView
+                    android:id="@+id/post_count_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Posts" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/fullname_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/profile_img" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView

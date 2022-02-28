@@ -41,6 +41,7 @@ class FeedFragment : Fragment() {
 
         if (ParseUser.getCurrentUser() == null) {
             findNavController().navigate(FeedFragmentDirections.actionFeedDstToRegisterDst())
+            return
         }
 
         val query = ParseQuery<ParseObject>("Post")
