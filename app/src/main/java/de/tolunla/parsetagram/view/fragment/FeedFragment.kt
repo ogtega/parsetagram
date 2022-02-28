@@ -43,23 +43,36 @@ class FeedFragment : Fragment() {
             findNavController().navigate(FeedFragmentDirections.actionFeedDstToRegisterDst())
         }
 
-
         val query = ParseQuery<ParseObject>("Post")
+        query.whereContainedIn("user", listOf<ParseUser>(ParseUser.getCurrentUser()))
 
+        binding.swipeRefresh.setOnRefreshListener {
+            updateList(query)
+        }
+
+        updateList(query)
+    }
+
+    private fun updateList(query: ParseQuery<ParseObject>) {
+        feedAdapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch(Dispatchers.IO) {
             getSearchResultStream(query).collect { data ->
                 feedAdapter.submitData(data)
             }
         }
+
+        binding.swipeRefresh.isRefreshing = false
     }
 
-    private fun getSearchResultStream(query: ParseQuery<ParseObject>): Flow<PagingData<ParseObject>> {
-        return Pager(
-            config = PagingConfig(
-                pageSize = 20,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { ParseChronoPagingSource(query) }
-        ).flow
+    companion object {
+        fun getSearchResultStream(query: ParseQuery<ParseObject>): Flow<PagingData<ParseObject>> {
+            return Pager(
+                config = PagingConfig(
+                    pageSize = 20,
+                    enablePlaceholders = false
+                ),
+                pagingSourceFactory = { ParseChronoPagingSource(query) }
+            ).flow
+        }
     }
 }

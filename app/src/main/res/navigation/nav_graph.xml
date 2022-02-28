@@ -98,8 +98,7 @@
     </fragment>
     <fragment
         android:id="@+id/profile_dst"
-        android:name="de.tolunla.parsetagram.view.fragment.ProfileFragment"
-        android:label="@string/app_name">
+        android:name="de.tolunla.parsetagram.view.fragment.ProfileFragment">
         <action
             android:id="@+id/action_profileFragment_to_discover_dst"
             app:destination="@id/explore_dst" />

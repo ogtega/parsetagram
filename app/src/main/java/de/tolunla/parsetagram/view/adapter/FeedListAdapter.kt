@@ -1,12 +1,14 @@
 package de.tolunla.parsetagram.view.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.parse.ParseObject
+import com.parse.ParseUser
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
 
 class FeedListAdapter : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolder>(FeedComparator) {
@@ -26,9 +28,28 @@ class FeedListAdapter : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolde
         val post = getItem(position)
 
         post?.let {
-            post.getParseFile("image")?.let {
+            post.getParseFile("image")?.also {
                 val file = it.file
                 holder.binding.postImg.load(file)
+            }
+
+            post.getString("caption")?.let caption@{
+                if (it.isBlank()) {
+                    holder.binding.captionLayout.visibility = View.GONE
+                    return@caption
+                }
+
+                holder.binding.captionTv.text = it
+
+                post.getParseUser("user")?.fetchIfNeededInBackground { user: ParseUser, e ->
+                    if (e != null) return@fetchIfNeededInBackground
+                    holder.binding.usernameCaptionTv.text = user.username
+                }
+            }
+
+            post.getParseUser("user")?.fetchIfNeededInBackground { user: ParseUser, e ->
+                if (e != null) return@fetchIfNeededInBackground
+                holder.binding.usernameTv.text = user.username
             }
         }
     }

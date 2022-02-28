@@ -12,10 +12,13 @@
         <entry key="app/src/main/res/drawable/switch_thumb_camera_tint.xml" value="0.3105" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/camera_activity.xml" value="0.2916666666666667" />
+        <entry key="app/src/main/res/layout/camera_fragment.xml" value="0.25213675213675213" />
         <entry key="app/src/main/res/layout/caption_fragment.xml" value="0.25224454895254383" />
         <entry key="app/src/main/res/layout/feed_fragment.xml" value="0.3072916666666667" />
         <entry key="app/src/main/res/layout/login_fragment.xml" value="0.3072916666666667" />
         <entry key="app/src/main/res/layout/post_feed_item.xml" value="0.25213675213675213" />
+        <entry key="app/src/main/res/layout/profile_feed_fragment.xml" value="0.25213675213675213" />
+        <entry key="app/src/main/res/layout/profile_post_feed_item.xml" value="0.25213675213675213" />
         <entry key="app/src/main/res/layout/register_fragment.xml" value="0.3072916666666667" />
         <entry key="app/src/main/res/menu/bottom_navigation.xml" value="0.3072916666666667" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.13697916666666668" />
