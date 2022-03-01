@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.parse.ParseObject
@@ -41,6 +42,17 @@ class ProfileFragment : Fragment() {
             ParseUser.getCurrentUser().username
 
         binding.fullnameTv.text = ParseUser.getCurrentUser().getString("fullname")
+
+        binding.logoutBtn.setOnClickListener {
+            ParseUser.logOutInBackground { exception->
+                if (exception != null) {
+                    return@logOutInBackground
+                }
+
+                val action = ProfileFragmentDirections.actionProfileDstToRegisterDst()
+                findNavController().navigate(action)
+            }
+        }
         return binding.root
     }
 

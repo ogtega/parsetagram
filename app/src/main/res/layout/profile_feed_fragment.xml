@@ -36,11 +36,11 @@
                 app:layout_constraintTop_toTopOf="@id/profile_img">
 
                 <TextView
-                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
                     android:id="@+id/post_count_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0" />
+                    android:text="0"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
                 <TextView
                     android:id="@+id/post_count_label"
@@ -59,6 +59,14 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/profile_img" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/logout_btn"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="Log out" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/feed_list"
