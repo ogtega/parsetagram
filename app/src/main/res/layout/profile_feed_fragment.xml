@@ -68,6 +68,24 @@
             android:layout_marginHorizontal="16dp"
             android:text="Log out" />
 
+        <Button
+            android:id="@+id/follow_btn"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="Follow"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/unfollow_btn"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:text="Unfollow"
+            android:visibility="gone" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/feed_list"
             android:layout_width="match_parent"

@@ -1,17 +1,23 @@
 package de.tolunla.parsetagram.view.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.NavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.parse.ParseObject
 import com.parse.ParseUser
+import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
+import de.tolunla.parsetagram.view.fragment.FeedFragmentDirections
+import de.tolunla.parsetagram.view.fragment.ProfileFragmentDirections
 
-class FeedListAdapter : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolder>(FeedComparator) {
+class FeedListAdapter(val navController: NavController) : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolder>(FeedComparator) {
     private lateinit var inflater: LayoutInflater
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -50,6 +56,16 @@ class FeedListAdapter : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolde
             post.getParseUser("user")?.fetchIfNeededInBackground { user: ParseUser, e ->
                 if (e != null) return@fetchIfNeededInBackground
                 holder.binding.usernameTv.text = user.username
+
+                val bundle = bundleOf("username" to user.username)
+
+                holder.binding.usernameTv.setOnClickListener {
+                    navController.navigate(R.id.profile_dst, bundle)
+                }
+
+                holder.binding.usernameCaptionTv.setOnClickListener {
+                    navController.navigate(R.id.profile_dst, bundle)
+                }
             }
         }
     }

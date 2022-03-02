@@ -16,6 +16,7 @@ class ProfileFeedListAdapter : PagingDataAdapter<ParseObject, ProfileFeedListAda
     val liveSelected = MutableLiveData<Set<String>>()
     val selected = mutableSetOf<String>()
     private lateinit var inflater: LayoutInflater
+    var selectable = true
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         super.onAttachedToRecyclerView(recyclerView)
@@ -36,6 +37,8 @@ class ProfileFeedListAdapter : PagingDataAdapter<ParseObject, ProfileFeedListAda
             holder.binding.selectedBtn.isChecked = post.objectId in selected
 
             holder.binding.postImg.setOnClickListener {
+                if (!selectable) return@setOnClickListener
+
                 if (selected.isEmpty()) {
                     return@setOnClickListener
                 }
@@ -57,6 +60,8 @@ class ProfileFeedListAdapter : PagingDataAdapter<ParseObject, ProfileFeedListAda
             }
 
             holder.binding.postImg.setOnLongClickListener {
+                if (!selectable) return@setOnLongClickListener true
+
                 if (selected.isEmpty() || post.objectId !in selected) {
                     selected.add(post.objectId)
                 } else {

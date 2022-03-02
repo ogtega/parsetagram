@@ -99,6 +99,11 @@
     <fragment
         android:id="@+id/profile_dst"
         android:name="de.tolunla.parsetagram.view.fragment.ProfileFragment">
+        <argument
+            android:name="username"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_profileFragment_to_discover_dst"
             app:destination="@id/explore_dst" />

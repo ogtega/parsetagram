@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
 class FeedFragment : Fragment() {
 
     private lateinit var binding: FeedFragmentBinding
-    private val feedAdapter = FeedListAdapter()
+    private lateinit var feedAdapter: FeedListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,6 +32,7 @@ class FeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FeedFragmentBinding.inflate(inflater)
+        feedAdapter = FeedListAdapter(findNavController())
         binding.feedList.adapter = feedAdapter
         return binding.root
     }

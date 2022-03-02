@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 class ExploreFragment : Fragment() {
 
     private lateinit var binding: FeedFragmentBinding
-    private val feedAdapter = FeedListAdapter()
+    private lateinit var feedAdapter: FeedListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +28,7 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FeedFragmentBinding.inflate(inflater)
+        feedAdapter = FeedListAdapter(findNavController())
         binding.feedList.adapter = feedAdapter
         return binding.root
     }

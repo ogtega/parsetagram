@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.GridLayoutManager
 import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
+import com.parse.ktx.putOrRemove
 import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.ProfileFeedFragmentBinding
 import de.tolunla.parsetagram.view.adapter.ProfileFeedListAdapter
@@ -25,8 +27,10 @@ class ProfileFragment : Fragment() {
 
     private lateinit var binding: ProfileFeedFragmentBinding
     private lateinit var optionsMenu: Menu
+    private lateinit var parseUser: ParseUser
 
     private val feedAdapter = ProfileFeedListAdapter()
+    private val args: ProfileFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,13 +42,20 @@ class ProfileFragment : Fragment() {
         binding.feedList.adapter = feedAdapter
         binding.feedList.layoutManager = GridLayoutManager(context, 3)
 
-        (activity as AppCompatActivity).supportActionBar?.title =
-            ParseUser.getCurrentUser().username
+        parseUser = if (args.username == null)
+            ParseUser.getCurrentUser() else
+            ParseUser.getQuery().whereEqualTo("username", args.username).first
 
-        binding.fullnameTv.text = ParseUser.getCurrentUser().getString("fullname")
+        (activity as AppCompatActivity).supportActionBar?.title = parseUser.username
+
+        binding.fullnameTv.text = parseUser.getString("fullname")
+
+        feedAdapter.selectable = parseUser.isAuthenticated
+
+        binding.logoutBtn.visibility = if (parseUser.isAuthenticated) View.VISIBLE else View.GONE
 
         binding.logoutBtn.setOnClickListener {
-            ParseUser.logOutInBackground { exception->
+            ParseUser.logOutInBackground { exception ->
                 if (exception != null) {
                     return@logOutInBackground
                 }
@@ -53,13 +64,21 @@ class ProfileFragment : Fragment() {
                 findNavController().navigate(action)
             }
         }
+
+        binding.followBtn.setOnClickListener {
+            ParseUser.getCurrentUser().addUnique("following", parseUser)
+        }
+
+        binding.unfollowBtn.setOnClickListener {
+//            TODO: Unfollow users
+        }
         return binding.root
     }
 
     override fun onStart() {
         super.onStart()
         val query = ParseQuery<ParseObject>("Post")
-        query.whereContainedIn("user", listOf<ParseUser>(ParseUser.getCurrentUser()))
+        query.whereContainedIn("user", listOf(parseUser))
 
         feedAdapter.onPagesUpdatedFlow.asLiveData().observe(viewLifecycleOwner) {
             binding.postCountTv.text = feedAdapter.itemCount.toString()
