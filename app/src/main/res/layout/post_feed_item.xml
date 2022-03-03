@@ -35,7 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/profile_img" />
 
     <LinearLayout
-        android:id="@+id/caption_layout"
+        android:id="@+id/post_actions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -43,6 +43,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/post_img">
+
+        <ImageButton
+            android:id="@+id/post_like_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_favorite_post_selector" />
+
+        <ImageButton
+            android:id="@+id/post_comment_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/caption_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/post_actions">
 
         <TextView
             android:id="@+id/username_caption_tv"

@@ -9,7 +9,6 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.parse.ParseObject
 import com.parse.ParseUser
 import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
@@ -68,6 +67,10 @@ class FeedListAdapter(val navController: NavController) :
                         navController.navigate(R.id.profile_alt_dst, bundle)
                     }
                 }
+            }
+
+            holder.binding.postLikeBtn.setOnClickListener { view ->
+                view.isSelected = !view.isSelected
             }
         }
     }
