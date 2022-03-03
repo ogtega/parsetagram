@@ -15,9 +15,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.parse.ParseACL
 import com.parse.ParseFile
-import com.parse.ParseObject
 import com.parse.ParseUser
 import de.tolunla.parsetagram.databinding.CaptionFragmentBinding
+import de.tolunla.parsetagram.model.Post
 import java.io.File
 
 
@@ -49,28 +49,30 @@ class CaptionFragment : BottomSheetDialogFragment() {
 
         binding.shareBtn.setOnClickListener {
             val file = ParseFile(File(args.uri), "image/jpeg")
-            file.saveInBackground({ exception ->
+
+            file.saveInBackground(saveFile@{ exception ->
                 if (exception != null) {
-                    Log.d("FileSave", exception.stackTraceToString())
-                    return@saveInBackground
+                    return@saveFile
                 }
 
-                val user = ParseUser.getCurrentUser()
-                val post = ParseObject("Post")
+                val post = Post().apply {
+                    user = ParseUser.getCurrentUser()
+                    image = file
+                    caption = binding.captionTxt.text.toString()
+                    acl = ParseACL(ParseUser.getCurrentUser()).apply {
+                        publicReadAccess = true
+                    }
+                }
 
-                val postACL = ParseACL(ParseUser.getCurrentUser())
-                postACL.publicReadAccess = true
-                post.acl = postACL
+                post.saveInBackground { e ->
+                    if (e != null) {
+                        return@saveInBackground
+                    }
 
-                post.put("image", file)
-                post.put("user", user)
-                post.put("caption", binding.captionTxt.text.toString())
-
-                post.saveInBackground {
                     dialog.dismiss()
                 }
-            }, { progress ->
-                Log.d(this::class.java.name, progress.toString())
+            }, { percentDone ->
+                Log.d("Progress", percentDone.toString())
             })
         }
 

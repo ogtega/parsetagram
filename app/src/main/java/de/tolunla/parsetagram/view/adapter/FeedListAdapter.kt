@@ -1,6 +1,5 @@
 package de.tolunla.parsetagram.view.adapter
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,10 +13,10 @@ import com.parse.ParseObject
 import com.parse.ParseUser
 import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
-import de.tolunla.parsetagram.view.fragment.FeedFragmentDirections
-import de.tolunla.parsetagram.view.fragment.ProfileFragmentDirections
+import de.tolunla.parsetagram.model.Post
 
-class FeedListAdapter(val navController: NavController) : PagingDataAdapter<ParseObject, FeedListAdapter.ViewHolder>(FeedComparator) {
+class FeedListAdapter(val navController: NavController) :
+    PagingDataAdapter<Post, FeedListAdapter.ViewHolder>(FeedComparator) {
     private lateinit var inflater: LayoutInflater
 
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -59,12 +58,15 @@ class FeedListAdapter(val navController: NavController) : PagingDataAdapter<Pars
 
                 val bundle = bundleOf("username" to user.username)
 
-                holder.binding.usernameTv.setOnClickListener {
-                    navController.navigate(R.id.profile_dst, bundle)
-                }
+                if (user.username != ParseUser.getCurrentUser().username) {
 
-                holder.binding.usernameCaptionTv.setOnClickListener {
-                    navController.navigate(R.id.profile_dst, bundle)
+                    holder.binding.usernameTv.setOnClickListener {
+                        navController.navigate(R.id.profile_alt_dst, bundle)
+                    }
+
+                    holder.binding.usernameCaptionTv.setOnClickListener {
+                        navController.navigate(R.id.profile_alt_dst, bundle)
+                    }
                 }
             }
         }
@@ -73,12 +75,12 @@ class FeedListAdapter(val navController: NavController) : PagingDataAdapter<Pars
     inner class ViewHolder(val binding: PostFeedItemBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    object FeedComparator : DiffUtil.ItemCallback<ParseObject>() {
-        override fun areItemsTheSame(oldItem: ParseObject, newItem: ParseObject): Boolean {
+    object FeedComparator : DiffUtil.ItemCallback<Post>() {
+        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.hasSameId(newItem)
         }
 
-        override fun areContentsTheSame(oldItem: ParseObject, newItem: ParseObject): Boolean {
+        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
             return oldItem.hasSameId(newItem)
         }
     }

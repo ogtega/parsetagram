@@ -2,15 +2,18 @@ package de.tolunla.parsetagram
 
 import android.app.Application
 import com.parse.Parse
-import dagger.hilt.android.HiltAndroidApp
+import com.parse.ParseObject
+import de.tolunla.parsetagram.model.Follow
+import de.tolunla.parsetagram.model.Post
 
-@HiltAndroidApp
 class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG)
+        ParseObject.registerSubclass(Post::class.java)
+        ParseObject.registerSubclass(Follow::class.java)
 
         Parse.initialize(
             Parse.Configuration.Builder(this)

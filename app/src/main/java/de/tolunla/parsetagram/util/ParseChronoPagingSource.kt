@@ -3,13 +3,13 @@ package de.tolunla.parsetagram.util
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.parse.ParseObject
 import com.parse.ParseQuery
+import de.tolunla.parsetagram.model.Post
 
-class ParseChronoPagingSource(private val query: ParseQuery<ParseObject>) :
-    PagingSource<Int, ParseObject>() {
+class ParseChronoPagingSource(private val query: ParseQuery<Post>) :
+    PagingSource<Int, Post>() {
     // The refresh key is used for subsequent refresh calls to PagingSource.load after the initial load
-    override fun getRefreshKey(state: PagingState<Int, ParseObject>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Post>): Int? {
         // We need to get the previous key (or next key if previous is null) of the page
         // that was closest to the most recently accessed index.
         // Anchor position is the most recently accessed index
@@ -19,7 +19,7 @@ class ParseChronoPagingSource(private val query: ParseQuery<ParseObject>) :
         }
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ParseObject> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Post> {
         val position = params.key ?: 0
 
         query.skip = position

@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.parse.ParseObject
+import androidx.paging.PagingData
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import de.tolunla.parsetagram.databinding.FeedFragmentBinding
+import de.tolunla.parsetagram.model.Post
 import de.tolunla.parsetagram.view.adapter.FeedListAdapter
 import de.tolunla.parsetagram.view.fragment.FeedFragment.Companion.getSearchResultStream
 import kotlinx.coroutines.Dispatchers
@@ -35,13 +36,24 @@ class ExploreFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        val query = ParseQuery<ParseObject>("Post")
+        val query = ParseQuery<Post>("Post")
         query.whereNotContainedIn("user", listOf<ParseUser>(ParseUser.getCurrentUser()))
 
+        binding.swipeRefresh.setOnRefreshListener {
+            updateList(query)
+        }
+
+        updateList(query)
+    }
+
+    private fun updateList(query: ParseQuery<Post>) {
+        feedAdapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch(Dispatchers.IO) {
             getSearchResultStream(query).collect { data ->
                 feedAdapter.submitData(data)
             }
         }
+
+        binding.swipeRefresh.isRefreshing = false
     }
 }

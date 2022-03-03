@@ -14,6 +14,8 @@ import com.parse.ParseObject
 import com.parse.ParseQuery
 import com.parse.ParseUser
 import de.tolunla.parsetagram.databinding.FeedFragmentBinding
+import de.tolunla.parsetagram.model.Follow.Companion.following
+import de.tolunla.parsetagram.model.Post
 import de.tolunla.parsetagram.util.ParseChronoPagingSource
 import de.tolunla.parsetagram.view.adapter.FeedListAdapter
 import kotlinx.coroutines.Dispatchers
@@ -45,8 +47,9 @@ class FeedFragment : Fragment() {
             return
         }
 
-        val query = ParseQuery<ParseObject>("Post")
-        query.whereContainedIn("user", listOf<ParseUser>(ParseUser.getCurrentUser()))
+        val query = ParseQuery<Post>("Post")
+        val following = ParseUser.getCurrentUser().following().toMutableList()
+        query.whereContainedIn("user", following + listOf<ParseUser>(ParseUser.getCurrentUser()))
 
         binding.swipeRefresh.setOnRefreshListener {
             updateList(query)
@@ -55,7 +58,7 @@ class FeedFragment : Fragment() {
         updateList(query)
     }
 
-    private fun updateList(query: ParseQuery<ParseObject>) {
+    private fun updateList(query: ParseQuery<Post>) {
         feedAdapter.submitData(lifecycle, PagingData.empty())
         lifecycleScope.launch(Dispatchers.IO) {
             getSearchResultStream(query).collect { data ->
@@ -67,7 +70,7 @@ class FeedFragment : Fragment() {
     }
 
     companion object {
-        fun getSearchResultStream(query: ParseQuery<ParseObject>): Flow<PagingData<ParseObject>> {
+        fun getSearchResultStream(query: ParseQuery<Post>): Flow<PagingData<Post>> {
             return Pager(
                 config = PagingConfig(
                     pageSize = 20,

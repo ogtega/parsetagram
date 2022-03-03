@@ -7,10 +7,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.parse.ParseObject
 import de.tolunla.parsetagram.databinding.ProfilePostFeedItemBinding
+import de.tolunla.parsetagram.model.Post
 
-class ProfileFeedListAdapter : PagingDataAdapter<ParseObject, ProfileFeedListAdapter.ViewHolder>(
+class ProfileFeedListAdapter : PagingDataAdapter<Post, ProfileFeedListAdapter.ViewHolder>(
     FeedListAdapter.FeedComparator
 ) {
     val liveSelected = MutableLiveData<Set<String>>()
