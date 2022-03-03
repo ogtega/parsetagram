@@ -1,5 +1,6 @@
 package de.tolunla.parsetagram.view.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +13,12 @@ import coil.load
 import com.parse.ParseUser
 import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
+import de.tolunla.parsetagram.model.Like.Companion.isLiked
+import de.tolunla.parsetagram.model.Like.Companion.like
+import de.tolunla.parsetagram.model.Like.Companion.unlike
 import de.tolunla.parsetagram.model.Post
 
-class FeedListAdapter(val navController: NavController) :
+class FeedListAdapter(private val navController: NavController) :
     PagingDataAdapter<Post, FeedListAdapter.ViewHolder>(FeedComparator) {
     private lateinit var inflater: LayoutInflater
 
@@ -69,8 +73,21 @@ class FeedListAdapter(val navController: NavController) :
                 }
             }
 
+            holder.binding.postLikeBtn.isSelected = post.isLiked(ParseUser.getCurrentUser())
+
             holder.binding.postLikeBtn.setOnClickListener { view ->
                 view.isSelected = !view.isSelected
+
+                if (view.isSelected) {
+                    ParseUser.getCurrentUser().like(post) { exception ->
+                        if (exception != null) {
+                            Log.d(this::class.java.name, exception.stackTraceToString())
+                            return@like
+                        }
+                    }
+                } else {
+                    ParseUser.getCurrentUser().unlike(post)
+                }
             }
         }
     }

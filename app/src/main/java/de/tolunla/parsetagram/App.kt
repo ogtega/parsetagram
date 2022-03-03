@@ -4,6 +4,7 @@ import android.app.Application
 import com.parse.Parse
 import com.parse.ParseObject
 import de.tolunla.parsetagram.model.Follow
+import de.tolunla.parsetagram.model.Like
 import de.tolunla.parsetagram.model.Post
 
 class App : Application() {
@@ -14,6 +15,7 @@ class App : Application() {
         Parse.setLogLevel(Parse.LOG_LEVEL_DEBUG)
         ParseObject.registerSubclass(Post::class.java)
         ParseObject.registerSubclass(Follow::class.java)
+        ParseObject.registerSubclass(Like::class.java)
 
         Parse.initialize(
             Parse.Configuration.Builder(this)
