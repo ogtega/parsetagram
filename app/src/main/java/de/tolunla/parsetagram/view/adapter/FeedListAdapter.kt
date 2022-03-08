@@ -15,6 +15,7 @@ import de.tolunla.parsetagram.R
 import de.tolunla.parsetagram.databinding.PostFeedItemBinding
 import de.tolunla.parsetagram.model.Like.Companion.isLiked
 import de.tolunla.parsetagram.model.Like.Companion.like
+import de.tolunla.parsetagram.model.Like.Companion.likeCount
 import de.tolunla.parsetagram.model.Like.Companion.unlike
 import de.tolunla.parsetagram.model.Post
 
@@ -89,6 +90,11 @@ class FeedListAdapter(private val navController: NavController) :
                     ParseUser.getCurrentUser().unlike(post)
                 }
             }
+
+            val likes = post.likeCount()
+
+            holder.binding.postLikeCount.text = likes.toString()
+            holder.binding.postLikeLabel.text = if (likes == 1) "Like" else "Likes"
         }
     }
 

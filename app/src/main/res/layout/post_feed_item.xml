@@ -59,6 +59,26 @@
             android:layout_margin="4dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="8dp"
+            android:gravity="end|center_vertical">
+
+            <TextView
+                android:id="@+id/post_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="0" />
+
+            <TextView
+                android:id="@+id/post_like_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Likes" />
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
