@@ -28,7 +28,9 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-- [x] Post deletion in profile page
+- [x] Post deletion on profile page
+- [x] Profile following
+- [x] Custom camera view
 
 ## Video Walkthrough
 
